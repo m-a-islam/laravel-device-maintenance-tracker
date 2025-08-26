@@ -39,7 +39,7 @@ services:
       MYSQL_USER: app
       MYSQL_PASSWORD: app
     ports:
-      - "33061:3306"   # optional: expose to host
+      - "33061:3306"
     volumes:
       - db_data:/var/lib/mysql
     networks:
