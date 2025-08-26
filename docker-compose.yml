@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: laravel-app
+    restart: always
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+    environment:
+      # Laravel will read DB_* from .env (next section), these are just examples
+      APP_ENV: local
+    networks:
+      - laravel
+    healthcheck:
+      test: ["CMD", "php", "-v"]
+
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: laravel-nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  db:
+    image: mysql:8.0
+    container_name: laravel-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    ports:
+      - "33061:3306"   # optional: expose to host
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - laravel
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uapp", "-papp"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+networks:
+  laravel:
+
+volumes:
+  db_data:

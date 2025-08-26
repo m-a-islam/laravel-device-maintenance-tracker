@@ -1,18 +1,18 @@
-Requirements
+## Requirements
 
 Users can:
 
-Create/list/update/delete Devices: name (string), serial_number (unique), status (enum: active|inactive).
+#### Create/list/update/delete Devices: name (string), serial_number (unique), status (enum: active|inactive).
 
-Create/list/close Tickets for a device: title (string), description (text), state (open|closed), device_id (FK).
+#### Create/list/close Tickets for a device: title (string), description (text), state (open|closed), device_id (FK).
 
-Web UI:
+#### Web UI:
 
-Device list page (+ create/edit form).
+#### Device list page (+ create/edit form).
 
 Ticket list filtered by device (+ create ticket form; ability to mark closed).
 
-JSON API:
+### JSON API:
 
 POST /api/devices/{device}/tickets to create a ticket (validate required fields).
 
